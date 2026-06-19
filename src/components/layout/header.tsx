@@ -1,128 +1,89 @@
-'use client';
+'use client'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Search, Moon, Sun, Menu, X } from 'lucide-react';
-import { useState } from 'react';
-import { CHANNELS } from '@/lib/constants';
-import { cn } from '@/lib/utils';
-import { useTheme } from './theme-context';
+import Link from 'next/link'
+import { cn } from '@/lib/utils'
 
-export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const { isDark, toggle } = useTheme();
+const categories = [
+  { name: 'Nasional', slug: 'nasional' },
+  { name: 'Internasional', slug: 'internasional' },
+  { name: 'Ekonomi', slug: 'ekonomi' },
+  { name: 'Tekno', slug: 'tekno' },
+  { name: 'Olahraga', slug: 'olahraga' },
+  { name: 'Hiburan', slug: 'hiburan' },
+  { name: 'Health', slug: 'health' },
+  { name: 'Travel', slug: 'travel' },
+]
 
+export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="ideguru - Beranda">
-            <Image
-              src="/logo.png"
-              alt="ideguru"
-              width={100}
-              height={28}
-              className="h-7 w-auto"
-              priority
-            />
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+      <div className="bg-red-600 py-1">
+        <div className="max-w-7xl mx-auto px-4 text-right">
+          <span className="text-white text-xs font-medium">Breaking News: Terkini update berita hari ini</span>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center">
+              <span className="text-white font-bold text-lg">d</span>
+            </div>
+            <span className="text-xl font-bold text-gray-900">detikcom</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex lg:items-center lg:gap-1" aria-label="Kanal">
-            {CHANNELS.map((channel) => (
+          <nav className="hidden md:flex items-center space-x-1">
+            <Link href="/" className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 rounded">
+              Beranda
+            </Link>
+            {categories.map((cat) => (
               <Link
-                key={channel.slug}
-                href={channel.href}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-[var(--surface-hover)] dark:hover:text-white"
+                key={cat.slug}
+                href={`/kategori/${cat.slug}`}
+                className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 rounded"
               >
-                {channel.name}
+                {cat.name}
               </Link>
             ))}
           </nav>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-[var(--surface-hover)]"
-              aria-label={isSearchOpen ? 'Tutup pencarian' : 'Buka pencarian'}
-              aria-expanded={isSearchOpen}
-            >
-              <Search className="h-5 w-5" />
-            </button>
-            <button
-              onClick={toggle}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-[var(--surface-hover)]"
-              aria-label={isDark ? 'Mode terang' : 'Mode gelap'}
-            >
-              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </button>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-[var(--surface-hover)] lg:hidden"
-              aria-label={isMenuOpen ? 'Tutup menu' : 'Buka menu'}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-            >
-              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <div className="flex items-center space-x-4">
+            <div className="hidden md:block relative">
+              <input
+                type="search"
+                placeholder="Cari berita..."
+                className="w-64 pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
+              />
+              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+
+            <button className="hidden md:flex items-center space-x-2 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-full hover:bg-red-700 transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
+              <span>Login</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Search Bar */}
-      {isSearchOpen && (
-        <div
-          className="border-t border-border bg-background px-4 pb-4 pt-3"
-          role="search"
-          aria-label="Pencarian"
-        >
-          <div className="mx-auto max-w-2xl">
-            <form action="/cari" method="GET">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-                <input
-                  type="text"
-                  name="q"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari artikel, RPP, soal, beasiswa..."
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 py-3 pl-10 pr-4 text-sm outline-none transition-colors focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:focus:border-emerald-400 dark:focus:ring-emerald-800"
-                  autoFocus
-                />
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <nav
-          id="mobile-menu"
-          className="border-t border-border bg-background lg:hidden"
-          aria-label="Kanal"
-        >
-          <div className="space-y-1 px-4 pb-6 pt-4">
-            {CHANNELS.map((channel) => (
+      <div className="bg-gray-50 border-t border-gray-200 md:hidden">
+        <div className="max-w-7xl mx-auto px-4 py-3 overflow-x-auto">
+          <nav className="flex space-x-4 whitespace-nowrap">
+            {categories.map((cat) => (
               <Link
-                key={channel.slug}
-                href={channel.href}
-                onClick={() => setIsMenuOpen(false)}
-                className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
-                  'text-foreground hover:bg-[var(--surface-hover)] dark:hover:text-white'
-                )}
+                key={cat.slug}
+                href={`/kategori/${cat.slug}`}
+                className="px-3 py-1 text-xs font-medium text-gray-700 hover:text-red-600 hover:bg-red-50 rounded-full whitespace-nowrap"
               >
-                <span className={channel.color}>{channel.name}</span>
+                {cat.name}
               </Link>
             ))}
-          </div>
-        </nav>
-      )}
+          </nav>
+        </div>
+      </div>
     </header>
-  );
+  )
 }

@@ -1,119 +1,78 @@
-'use client';
+import Link from 'next/link'
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { CHANNELS } from '@/lib/constants';
+const footerLinks = {
+  Kategori: [
+    { name: 'Nasional', href: '/kategori/nasional' },
+    { name: 'Internasional', href: '/kategori/internasional' },
+    { name: 'Ekonomi', href: '/kategori/ekonomi' },
+    { name: 'Tekno', href: '/kategori/tekno' },
+    { name: 'Olahraga', href: '/kategori/olahraga' },
+    { name: 'Hiburan', href: '/kategori/hiburan' },
+  ],
+  Lainnya: [
+    { name: 'Tentang Kami', href: '#' },
+    { name: 'Kontak', href: '#' },
+    { name: 'Karir', href: '#' },
+    { name: 'Pedoman Media Siber', href: '#' },
+    { name: 'Privacy Policy', href: '#' },
+  ],
+}
 
-export default function Footer() {
+export function Footer() {
   return (
-    <footer className="mt-auto border-t border-border bg-muted" role="contentinfo">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
-          <div className="sm:col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2" aria-label="ideguru - Beranda">
-              <Image
-                src="/logo.png"
-                alt="ideguru"
-                width={120}
-                height={34}
-                className="h-8 w-auto"
-              />
-            </Link>
-            <p className="mt-3 text-sm leading-6 text-muted-foreground">
-              Platform informasi, sumber belajar, dan perangkat pembelajaran untuk guru dan tenaga
-              kependidikan di Indonesia.
-            </p>
-          </div>
-
-          {/* Channels */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground">Kanal</h3>
-            <ul className="mt-4 space-y-3">
-              {CHANNELS.slice(0, 4).map((channel) => (
-                <li key={channel.slug}>
-                  <Link
-                    href={channel.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground dark:hover:text-white focus-visible:outline-2 focus-visible:outline-emerald-500 rounded"
-                  >
-                    {channel.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-sm font-semibold text-foreground">Kanal</h3>
-            <ul className="mt-4 space-y-3">
-              {CHANNELS.slice(4).map((channel) => (
-                <li key={channel.slug}>
-                  <Link
-                    href={channel.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground dark:hover:text-white focus-visible:outline-2 focus-visible:outline-emerald-500 rounded"
-                  >
-                    {channel.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-sm font-semibold text-foreground">
-              Newsletter
-            </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Dapatkan update artikel dan perangkat pembelajaran terbaru.
-            </p>
-            <form className="mt-4" onSubmit={(e) => e.preventDefault()}>
-              <label htmlFor="footer-email" className="sr-only">Alamat email</label>
-              <div className="flex gap-2">
-                <input
-                  id="footer-email"
-                  type="email"
-                  placeholder="Email Anda"
-                  className="min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:focus:border-emerald-400"
-                />
-                <button
-                  type="submit"
-                  className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-700 focus-visible:outline-2 focus-visible:outline-white rounded-lg"
-                >
-                  Langganan
-                </button>
+    <footer className="bg-gray-900 text-gray-300 mt-12">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-1">
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-red-600 rounded flex items-center justify-center">
+                <span className="text-white font-bold text-lg">d</span>
               </div>
-            </form>
-            {/* Quick Links */}
-            <div className="mt-6">
-              <h4 className="text-sm font-semibold text-foreground">Lainnya</h4>
-              <ul className="mt-3 space-y-2">
-                <li>
-                  <Link href="/cari" className="text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-                    Cari
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/profil" className="text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-                    Profil
-                  </Link>
-                </li>
-                <li>
-                  <a href="/rss.xml" className="text-sm text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">
-                    RSS Feed
-                  </a>
-                </li>
+              <span className="text-xl font-bold text-white">detikcom</span>
+            </div>
+            <p className="text-sm text-gray-400 leading-relaxed">
+              Portal berita terpercaya yang menyajikan informasi terkini dan terbaru hari ini dari berbagai kategori berita.
+            </p>
+          </div>
+
+          {Object.entries(footerLinks).map(([title, links]) => (
+            <div key={title}>
+              <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">{title}</h3>
+              <ul className="space-y-2">
+                {links.map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="text-sm text-gray-400 hover:text-white transition-colors">
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
+            </div>
+          ))}
+
+          <div>
+            <h3 className="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Ikuti Kami</h3>
+            <div className="flex space-x-4">
+              {['Facebook', 'Twitter', 'Instagram', 'YouTube'].map((social) => (
+                <a
+                  key={social}
+                  href="#"
+                  className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-400 hover:bg-red-600 hover:text-white transition-colors"
+                  title={social}
+                >
+                  <span className="text-xs font-bold">{social[0]}</span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-8">
-          <p className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} ideguru. Platform Pendidikan Indonesia.
+        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+          <p className="text-sm text-gray-500">
+            &copy; {new Date().getFullYear()} detikcom. All rights reserved.
           </p>
         </div>
       </div>
     </footer>
-  );
+  )
 }
