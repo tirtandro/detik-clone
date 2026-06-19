@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { Search, Moon, Sun, Menu, X } from 'lucide-react';
 import { useState } from 'react';
@@ -18,13 +19,15 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2" aria-label="ideguru - Beranda">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-sm font-bold text-white">
-              IG
-            </div>
-            <span className="text-xl font-bold tracking-tight text-foreground">
-              ideguru
-            </span>
+          <Link href="/" className="flex items-center gap-2 shrink-0" aria-label="ideguru - Beranda">
+            <Image
+              src="/logo.png"
+              alt="ideguru"
+              width={100}
+              height={28}
+              className="h-7 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

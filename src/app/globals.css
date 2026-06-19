@@ -50,8 +50,14 @@
   --muted-foreground: #94a3b8;
 }
 
+html {
+  background-image: url('/batik.png');
+  background-repeat: repeat;
+  background-size: 300px;
+}
+
 body {
-  background: var(--background);
+  background-color: color-mix(in srgb, var(--background) 78%, transparent);
   color: var(--foreground);
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;

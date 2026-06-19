@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { CHANNELS } from '@/lib/constants';
 
@@ -11,12 +12,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2" aria-label="ideguru - Beranda">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-sm font-bold text-white">
-                IG
-              </div>
-              <span className="text-xl font-bold tracking-tight text-foreground">
-                ideguru
-              </span>
+              <Image
+                src="/logo.png"
+                alt="ideguru"
+                width={120}
+                height={34}
+                className="h-8 w-auto"
+              />
             </Link>
             <p className="mt-3 text-sm leading-6 text-muted-foreground">
               Platform informasi, sumber belajar, dan perangkat pembelajaran untuk guru dan tenaga
