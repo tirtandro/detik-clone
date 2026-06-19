@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  SUPER_ADMIN
+  EDITOR
+  MODERATOR
+  READER
+}
+
+enum ContentType {
+  ARTICLE
+  RPP
+  SOAL
+  INFO_GURU
+  BEASISWA
+  EDTECH
+  KEBIJAKAN
+  TIPS
+  QUIZ
+}
+
+enum Status {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model User {
+  id            String     @id @default(cuid())
+  name          String?
+  email         String?    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          Role       @default(READER)
+  isActive      Boolean    @default(true)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  accounts   Account[]
+  sessions   Session[]
+  contents   Content[]
+  bookmarks  Bookmark[]
+  downloads  Download[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Channel {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  description String?
+  icon        String?
+  color       String    @default("#059669")
+  bgColor     String    @default("#ecfdf5")
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  contents    Content[]
+}
+
+model Content {
+  id             String      @id @default(cuid())
+  slug           String      @unique
+  title          String
+  excerpt        String?     @db.Text
+  body           String?     @db.Text
+  type           ContentType @default(ARTICLE)
+  status         Status      @default(DRAFT)
+  featured       Boolean     @default(false)
+  coverImage     String?
+  readTime       Int?
+  viewCount      Int         @default(0)
+  downloadCount  Int         @default(0)
+  publishedAt    DateTime?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  authorId  String
+  author    User         @relation(fields: [authorId], references: [id])
+  channelId String
+  channel   Channel      @relation(fields: [channelId], references: [id])
+  tags      ContentTag[]
+  bookmarks Bookmark[]
+  downloads Download[]
+}
+
+model Tag {
+  id       String       @id @default(cuid())
+  name     String       @unique
+  slug     String       @unique
+  contents ContentTag[]
+}
+
+model ContentTag {
+  contentId String
+  tagId     String
+  content   Content @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([contentId, tagId])
+}
+
+model Download {
+  id         String   @id @default(cuid())
+  filename   String
+  url        String
+  mimeType   String   @default("application/pdf")
+  size       Int      @default(0)
+  contentId  String
+  content    Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
+  downloadedAt DateTime @default(now())
+}
+
+model Bookmark {
+  userId    String
+  contentId String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   Content  @relation(fields: [contentId], references: [id], onDelete: Cascade)
+
+  @@id([userId, contentId])
+}
+
+model NewsletterSubscriber {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String?
+  verified     Boolean   @default(false)
+  subscribedAt DateTime  @default(now())
+}
+
+model SiteSetting {
+  key         String @id
+  value       String @db.Text
+  description String?
+}

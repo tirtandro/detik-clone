@@ -1,11 +1,10 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import Header from '@/components/layout/header';
-import Footer from '@/components/layout/footer';
+import { Analytics } from '@/components/layout/analytics';
 import { ThemeProvider } from '@/components/layout/theme-context';
 import { BookmarkProvider } from '@/components/layout/bookmark-context';
-import { Analytics } from '@/components/layout/analytics';
 import { ScrollToTop } from '@/components/layout/scroll-to-top';
+import { Toaster } from 'sonner';
 
 export const viewport: Viewport = {
   themeColor: '#059669',
@@ -59,13 +58,10 @@ export default function RootLayout({
         </a>
         <ThemeProvider>
           <BookmarkProvider>
-            <Header />
-            <main id="main-content" className="flex-1" tabIndex={-1}>
-              {children}
-            </main>
-            <Footer />
+            {children}
             <ScrollToTop />
           </BookmarkProvider>
+          <Toaster position="top-right" richColors closeButton />
         </ThemeProvider>
       </body>
     </html>
